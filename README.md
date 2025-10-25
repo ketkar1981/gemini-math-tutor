@@ -1,41 +1,38 @@
 # Gemini Math Tutor
 
-Run the project with the single helper script:
+![Gemini Math Tutor](images/gemini-math-tutor.png)
+
+## Codespaces 
+
+- This project is designed for contributors to use GitHub Codespaces in a browser — no local installs are required. The devcontainer provisions Python, Node, and the extensions needed for development.
+
+- Contributors are expected to obtain a Gemini API key and add it as a Codespaces secret (secure, not checked into the repo).
+    - [How to fork a Github repo](https://www.youtube.com/watch?v=-9ftoxZ2X9g)
+    - [How to start Codespaces for a repo you forked](https://www.youtube.com/watch?v=2P-LycfbDF0)
+	- [How to obtain Gemini key](https://www.youtube.com/watch?v=6BRyynZkvf0)
+	- [How to add a Codespaces secret](https://www.youtube.com/watch?v=Y8u2eH8aGOw)
+
+### Recommended contributor flow
+1. Create/open a Codespace for this repository (via the GitHub UI or VS Code).
+2. Add a Codespaces secret named `GEMINI_API_KEY` containing your API key (see link above).
+3. Rebuild the Codespace/devcontainer if prompted so post-create commands run and the extension is installed.
+4. In the Codespace terminal run:
 
 ```bash
 bash start_dev.sh
 ```
 
-What `start_dev.sh` does:
-- Verifies that `GEMINI_API_KEY` is set in the environment.
-- Runs a small key-check that exercises the Gemini client (prints a short sample output).
-- Starts the FastAPI backend (uvicorn) on port 8000 and waits for `/health`.
+## What `start_dev.sh` does (short)
+- Validates `GEMINI_API_KEY` is present in the environment.
+- Runs a small key-check that exercises the Gemini client and prints a short sample output.
+- Starts the FastAPI backend and waits for `/health`.
 - Performs a quick end-to-end request to the running server using the bundled client.
 - Attempts to start the frontend dev server (port 3000) if `npm` is available.
-- Waits for the frontend to be ready and prints (or opens) a preview URL appropriate for your environment (Codespaces preview or localhost).
+- Waits for the frontend to be ready and prints (or attempts to open) a preview URL appropriate for Codespaces or localhost.
 - Tails backend and frontend logs and cleans up background processes when you press Ctrl-C.
 
-Notes:
-- Preferred (Codespaces): add `GEMINI_API_KEY` as a Codespaces secret so the key is injected securely into the container. This avoids placing the key in shell history or files.
-
-	To add a Codespaces secret:
-	1. Go to your repository → Settings → Secrets and variables → Codespaces.
- 2. Click "New repository secret".
- 3. Name: `GEMINI_API_KEY`  Value: (paste the key).
- 4. Rebuild the Codespace / devcontainer so the secret is available in the environment.
-
-- Local (developer machine): if you're running the script locally you can set the environment variable in your shell for the current session. Avoid committing keys or placing them in files that might be checked in.
-
-	Example (temporary for the session):
-	```bash
-	export GEMINI_API_KEY="<your-api-key-here>"
-	bash start_dev.sh
-	```
-
-- If `npm` is not available the script will skip starting the frontend and write a short note to `.devlogs/frontend.log`.
-- If you change `.devcontainer/devcontainer.json` (ports behavior), rebuild the devcontainer so the settings take effect.
-
-That's it — run `bash start_dev.sh` and follow the printed messages.
+### Security note
+Do not commit API keys or secrets. Use Codespaces secrets for secure injection into the container. Local testing may use a session-only `export GEMINI_API_KEY=...` but avoid saving keys to files that could be committed.
 
 Updated: October 25, 2025
 
