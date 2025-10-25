@@ -33,8 +33,15 @@
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "shd101wyy.markdown-preview-enhanced"
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-mermaid"
       ],
+      "settings": {
+        "markdown.preview.openMarkdownLinks": "inPreview",
+        "markdown-preview-enhanced.enableScriptExecution": true,
+        "markdown-preview-enhanced.previewTheme": "github-light.css",
+        "markdown-mermaid.previewAutoOpen": true
+      }
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "editor.formatOnSave": true

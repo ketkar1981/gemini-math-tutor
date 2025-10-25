@@ -31,6 +31,22 @@ bash start_dev.sh
 - Waits for the frontend to be ready and prints (or attempts to open) a preview URL appropriate for Codespaces or localhost.
 - Tails backend and frontend logs and cleans up background processes when you press Ctrl-C.
 
+## Architecture diagram
+
+The following Mermaid diagram shows how the frontend, backend, and Gemini client interact:
+
+```mermaid
+flowchart LR
+	Browser[User browser] -->|POST /api/generate| FE[Frontend (Express static + proxy)]
+	FE -->|proxy /api/generate → /generate| BE[Backend (FastAPI)]
+	BE -->|calls| GC[GeminiClient (server-side wrapper)]
+	GC -->|API request| Gemini[Google Gemini / Vertex AI]
+	KeyTest[gemini_key_test.py] -->|light test| GC
+	StartDev[start_dev.sh] --> FE
+	StartDev --> BE
+	StartDev --> KeyTest
+```
+
 ### Security note
 Do not commit API keys or secrets. Use Codespaces secrets for secure injection into the container. Local testing may use a session-only `export GEMINI_API_KEY=...` but avoid saving keys to files that could be committed.
 
