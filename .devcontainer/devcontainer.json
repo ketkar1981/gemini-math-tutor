@@ -14,6 +14,8 @@
       }
     }
   },
-  "postCreateCommand": "pip install --user -r requirements.txt"
+  "postCreateCommand": "bash -lc \"echo '[postCreateCommand] ✅ Container created at $(date)' | tee /tmp/postCreate.log\"",
+  "postStartCommand": "bash -lc \"echo '[postStartCommand] 🚀 Container started at $(date)' | tee -a /tmp/postCreate.log\"",
+  "postAttachCommand": "bash -lc \"echo '[postAttachCommand] 💻 VS Code attached at $(date)' | tee -a /tmp/postCreate.log\""
 }
 
