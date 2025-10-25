@@ -1,6 +1,12 @@
 {
   "name": "Gemini Math Tutor",
   "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "lfs": "true" // This is the key setting for Git LFS
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
