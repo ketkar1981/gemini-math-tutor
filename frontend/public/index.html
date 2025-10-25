@@ -1,73 +1,79 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Gemini Math Tutor</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>Gemini Math Tutor (Frontend)</h1>
 
-    <p>Enter a question for the math tutor and click <strong>Ask</strong>. This UI proxies requests to the backend server at <code>/api/generate</code>.</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gemini Math Tutor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <label for="question"><strong>Question</strong></label>
-    <textarea id="question" placeholder="E.g. Solve 2x+3=11. Show steps."></textarea>
+<body>
+  <h1>Gemini Math Tutor (Frontend)</h1>
 
-    <div class="row controls">
-      <label class="label-inline"><input id="temperature" class="small" type="number" step="0.1" min="0" max="1" value="0.2">Temperature</label>
-      <label class="label-inline"><input id="tokens" class="small" type="number" step="1" min="16" value="512">Max tokens</label>
-      <button id="ask">Ask</button>
-      <span id="status"></span>
-    </div>
+  <p>Enter a question for the math tutor and click <strong>Ask</strong>. This UI proxies requests to the backend server
+    at <code>/api/generate</code>.</p>
 
-    <h3>Answer</h3>
-    <pre id="answer">No answer yet.</pre>
+  <label for="question"><strong>Question</strong></label>
+  <textarea id="question" placeholder="E.g. Solve 2x+3=11. Show steps."></textarea>
 
-    <script>
-      const askBtn = document.getElementById('ask');
-      const qEl = document.getElementById('question');
-      const ansEl = document.getElementById('answer');
-      const statusEl = document.getElementById('status');
+  <div class="row controls">
+    <label class="label-inline"><input id="temperature" class="small" type="number" step="0.1" min="0" max="1"
+        value="0.2">Temperature</label>
+    <label class="label-inline"><input id="tokens" class="small" type="number" step="1" min="16" value="512">Max
+      tokens</label>
+    <button id="ask">Ask</button>
+    <span id="status"></span>
+  </div>
 
-      async function ask() {
-        const question = qEl.value.trim();
-        if (!question) return alert('Please enter a question');
-        const temperature = parseFloat(document.getElementById('temperature').value) || 0.2;
-        const max_output_tokens = parseInt(document.getElementById('tokens').value, 10) || 512;
+  <h3>Answer</h3>
+  <pre id="answer">No answer yet.</pre>
 
-        statusEl.textContent = 'sending...';
-        ansEl.textContent = '';
+  <script>
+    const askBtn = document.getElementById('ask');
+    const qEl = document.getElementById('question');
+    const ansEl = document.getElementById('answer');
+    const statusEl = document.getElementById('status');
 
-        try {
-          const resp = await fetch('/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question, temperature, max_output_tokens })
-          });
+    async function ask() {
+      const question = qEl.value.trim();
+      if (!question) return alert('Please enter a question');
+      const temperature = parseFloat(document.getElementById('temperature').value) || 0.2;
+      const max_output_tokens = parseInt(document.getElementById('tokens').value, 10) || 512;
 
-          if (!resp.ok) {
-            const text = await resp.text();
-            throw new Error(`${resp.status}: ${text}`);
-          }
+      statusEl.textContent = 'sending...';
+      ansEl.textContent = '';
 
-          const data = await resp.json();
-          // The backend returns { answer: ..., model: ... }
-          ansEl.textContent = data.answer || JSON.stringify(data, null, 2);
-          statusEl.textContent = `model: ${data.model || 'unknown'}`;
-        } catch (err) {
-          console.error(err);
-          ansEl.textContent = 'Error: ' + (err.message || String(err));
-          statusEl.textContent = 'error';
+      try {
+        const resp = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, temperature, max_output_tokens })
+        });
+
+        if (!resp.ok) {
+          const text = await resp.text();
+          throw new Error(`${resp.status}: ${text}`);
         }
+
+        const data = await resp.json();
+        // The backend returns { answer: ..., model: ... }
+        ansEl.textContent = data.answer || JSON.stringify(data, null, 2);
+        statusEl.textContent = `model: ${data.model || 'unknown'}`;
+      } catch (err) {
+        console.error(err);
+        ansEl.textContent = 'Error: ' + (err.message || String(err));
+        statusEl.textContent = 'error';
       }
+    }
 
-      askBtn.addEventListener('click', ask);
+    askBtn.addEventListener('click', ask);
 
-      // Enter to submit when focused in textarea + Ctrl/Cmd+Enter
-      qEl.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') ask();
-      });
-    </script>
-  </body>
+    // Enter to submit when focused in textarea + Ctrl/Cmd+Enter
+    qEl.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') ask();
+    });
+  </script>
+</body>
+
 </html>
