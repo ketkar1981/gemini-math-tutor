@@ -51,7 +51,8 @@ def generate(req: GenerateRequest):
     try:
         client = GeminiClient(api_key=os.environ.get("GEMINI_API_KEY"))
     except ValueError:
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured on server")
+        raise HTTPException(
+            status_code=500, detail="GEMINI_API_KEY not configured on server")
     except RuntimeError as e:
         # e.g., google-genai not installed
         raise HTTPException(status_code=500, detail=str(e))

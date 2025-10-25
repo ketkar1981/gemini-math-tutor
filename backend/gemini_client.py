@@ -33,7 +33,8 @@ class GeminiClient:
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
             # Do not create a client at import-time; only raise if user actually instantiates
-            raise ValueError("GEMINI_API_KEY environment variable not set and no api_key provided")
+            raise ValueError(
+                "GEMINI_API_KEY environment variable not set and no api_key provided")
 
         if genai is None:
             raise RuntimeError(
