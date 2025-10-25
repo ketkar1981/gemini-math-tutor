@@ -37,14 +37,40 @@ The following Mermaid diagram shows how the frontend, backend, and Gemini client
 
 ```mermaid
 flowchart LR
-	Browser[User browser] -->|POST /api/generate| FE[Frontend (Express static + proxy)]
-	FE -->|proxy /api/generate → /generate| BE[Backend (FastAPI)]
-	BE -->|calls| GC[GeminiClient (server-side wrapper)]
-	GC -->|API request| Gemini[Google Gemini / Vertex AI]
-	KeyTest[gemini_key_test.py] -->|light test| GC
-	StartDev[start_dev.sh] --> FE
-	StartDev --> BE
-	StartDev --> KeyTest
+
+	subgraph Your Local Machine
+
+		subgraph Browser
+			A[UI]
+		end
+	
+	end
+
+	subgraph Your Codespace
+		subgraph Frontend["Frontend Server"]
+			B1[index.html]
+			B2[server.js]
+		end
+
+		subgraph Backend["Backend Server"]
+			C1[gemini_server.py]
+			C2[gemini_client.py]
+		end
+	end
+
+    E[Gemini API]
+
+    %% Flow: Request
+    A -->| Rest API| B2
+    B2 -->| Rest API| C1
+    C1 -->| Function Call| C2
+    C2 -->| Rest API| E
+    
+    %% Flow: Response
+    E -->| Response Text| C2
+    C2 -->| Response Text| C1
+    C1 -->| Response Text | B2
+    B2 -->| Response Text| A
 ```
 
 ### Security note
