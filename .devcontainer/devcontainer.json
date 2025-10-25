@@ -40,9 +40,7 @@
         "markdown.preview.openMarkdownLinks": "inPreview",
         "markdown-preview-enhanced.enableScriptExecution": true,
         "markdown-preview-enhanced.previewTheme": "github-light.css",
-        "markdown-mermaid.previewAutoOpen": true
-      }
-      "settings": {
+        "markdown-mermaid.previewAutoOpen": true,
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "editor.formatOnSave": true
       }
