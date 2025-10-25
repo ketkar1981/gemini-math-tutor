@@ -32,7 +32,8 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance"
+        "ms-python.vscode-pylance",
+        "shd101wyy.markdown-preview-enhanced"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
