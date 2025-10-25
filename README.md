@@ -32,6 +32,14 @@ bash start_dev.sh
 - Waits for the frontend to be ready and prints (or attempts to open) a preview URL appropriate for Codespaces or localhost.
 - Tails backend and frontend logs and cleans up background processes when you press Ctrl-C.
 
+Codespaces will launch the app in a browser tab (pop-up) make sure it is not blocked.
+
+Additionally the output of the script will have something like the following, you can copy the url and paste it into your browser.
+```
+Application is ready. Open this URL in your browser:
+  https://your-codespaces-name-3000.app.github.dev
+```
+
 ## Architecture diagram
 
 The following Mermaid diagram shows how the frontend, backend, and Gemini client interact:

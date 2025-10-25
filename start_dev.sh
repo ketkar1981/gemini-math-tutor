@@ -100,7 +100,7 @@ echo "[start_dev] frontend pid=$frontend_pid (logs: $LOGDIR/frontend.log)"
 # we can use the preview domain pattern so the URL opens in your local browser.
 if [ -n "${CODESPACE_NAME:-}" ]; then
   # Codespaces exposes previews at: https://<port>-<codespace>.githubpreview.dev
-  FRONTEND_URL="https://3000-${CODESPACE_NAME}.githubpreview.dev"
+  FRONTEND_URL="https://${CODESPACE_NAME}-3000.app.github.dev"
   echo "[start_dev] detected Codespaces (CODESPACE_NAME=$CODESPACE_NAME)."
   echo "[start_dev] open the preview URL or use the Ports tab in Codespaces to open port 3000."
 else
