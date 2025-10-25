@@ -5,18 +5,28 @@
     "ghcr.io/devcontainers/features/git:1": {
       "version": "latest"
     },
-    "ghcr.io/devcontainers/features/git-lfs:1": {}
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
   },
-  "postCreateCommand": "pip install -r backend/requirements.txt",
-  "forwardPorts": [8000],
+  "postCreateCommand": "pip install -r backend/requirements.txt && (cd frontend && npm install)",
+  "forwardPorts": [
+    8000,
+    3000
+  ],
   "portsAttributes": {
     "8000": {
       "label": "FastAPI (uvicorn)",
       "onAutoForward": "openBrowser"
+    },
+    "3000": {
+      "label": "Frontend (3000)",
+      "onAutoForward": "openBrowser"
     }
   },
   "remoteEnv": {
-    "TZ": "Asia/Kolkata" 
+    "TZ": "Asia/Kolkata"
   },
   "customizations": {
     "vscode": {

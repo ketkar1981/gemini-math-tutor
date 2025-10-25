@@ -48,6 +48,25 @@ curl -X POST http://localhost:8000/generate \
 	-d '{"question":"Solve 2x+3=11. Show steps.","temperature":0.1}'
 ```
 
+Frontend (web UI)
+
+- A minimal frontend is included in `frontend/` that serves a static page and proxies `/api` requests to the backend. The frontend dev server runs on port 3000 by default and proxies to the backend on port 8000.
+- To run the frontend locally (when backend is running):
+
+```bash
+cd frontend
+npm start        # starts the frontend at http://localhost:3000 (devcontainer installs deps automatically)
+```
+
+- If your backend is on a different host/port, set `API_TARGET` before starting the frontend, for example:
+
+```bash
+API_TARGET=http://127.0.0.1:8000 npm start
+```
+
+- The frontend UI posts JSON to `/api/generate`, which the frontend server proxies to the backend's `/generate` endpoint so you won't need to deal with CORS in the browser.
+
+
 Devcontainer / Codespaces notes
 
 - The devcontainer is configured in `.devcontainer/devcontainer.json` and forwards port `8000` so VS Code/Codespaces can open the FastAPI server in the browser automatically.
