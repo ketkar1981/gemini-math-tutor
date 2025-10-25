@@ -24,6 +24,12 @@ pre {
     white-space: pre-wrap;
 }
 
+/* Make the answer box appear with a light green background for easier scanning */
+pre#answer {
+    background: #e8f8ee; /* light green */
+    border-color: #cfead8; /* slightly darker green for contrast */
+}
+
 .row {
     display: flex;
     gap: 1rem;
