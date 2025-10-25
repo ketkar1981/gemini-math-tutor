@@ -54,6 +54,35 @@ Devcontainer / Codespaces notes
 - The devcontainer is configured in `.devcontainer/devcontainer.json` and forwards port `8000` so VS Code/Codespaces can open the FastAPI server in the browser automatically.
 - For Codespaces, add `GEMINI_API_KEY` as a Codespaces secret (Settings → Secrets and variables → Codespaces) so the secret is injected securely into the container.
 
+Adding `GEMINI_API_KEY` for collaborators
+
+If you want other contributors to be able to run the server in Codespaces or the devcontainer, ask them to add `GEMINI_API_KEY` to the repository's secrets. Here are short, reliable options you can include in onboarding instructions:
+
+- Add as a Codespaces secret (recommended for Codespaces users):
+	1. Go to the GitHub repository → Settings → Secrets and variables → Codespaces.
+ 2. Click "New repository secret".
+ 3. Name: `GEMINI_API_KEY`  Value: (paste the key).
+ 4. Rebuild the Codespace / devcontainer so the secret is injected into the environment.
+
+- Add as a repository secret for Actions (if you use Actions to run server tests):
+	1. Settings → Secrets and variables → Actions → New repository secret.
+	2. Name: `GEMINI_API_KEY`  Value: (paste the key).
+
+- If contributors are running locally (not Codespaces):
+	- They can set the key in their shell for the session:
+		```bash
+		export GEMINI_API_KEY="your_real_api_key_here"
+		```
+	- Or create a local `.env` file (add it to `.gitignore`) with:
+		```ini
+		GEMINI_API_KEY=your_real_api_key_here
+		```
+
+Security notes
+
+- Only repository admins can add repo-level secrets. If a contributor can't add the secret, they can run locally with a personal `.env` or a local env var instead.
+- Never store the secret in the repo or commit `.env` files. Use Codespaces/Actions secrets or local `.env` excluded by `.gitignore`.
+
 Testing without a real Gemini key
 
 - You can test the server's health endpoint without an API key. To test `/generate` without making real Gemini calls, modify `backend/gemini_server.py` to mock `GeminiClient.generate()` or I can add a `--mock` mode if you'd like.
