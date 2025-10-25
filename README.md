@@ -1,4 +1,3 @@
-(The file `/workspaces/gemini-math-tutor/README.md` exists, but is empty)
 # Gemini Math Tutor
 
 This repository contains a small FastAPI wrapper around the Gemini API and a lightweight client script that posts to the server.
