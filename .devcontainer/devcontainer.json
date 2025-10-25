@@ -7,6 +7,10 @@
     },
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
+  "postCreateCommand": "pip install -r backend/requirements.txt",
+  "remoteEnv": {
+    "TZ": "Asia/Kolkata" 
+  },
   "customizations": {
     "vscode": {
       "extensions": [
