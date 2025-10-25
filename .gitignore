@@ -118,6 +118,8 @@ venv.bak/
 
 # dotenv and environment files
 .env
+.devlogs/
+package-lock.json
 .env.* 
 .envrc
 
@@ -132,3 +134,16 @@ venv.bak/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Node.js / frontend (global)
+# Ignore node modules and common build/cache/log artifacts anywhere in the repo
+node_modules/
+.parcel-cache/
+.next/
+dist/
+build/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
