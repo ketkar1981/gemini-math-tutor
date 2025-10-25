@@ -8,6 +8,13 @@
     "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
   "postCreateCommand": "pip install -r backend/requirements.txt",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "FastAPI (uvicorn)",
+      "onAutoForward": "openBrowser"
+    }
+  },
   "remoteEnv": {
     "TZ": "Asia/Kolkata" 
   },

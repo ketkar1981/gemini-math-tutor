@@ -1,4 +1,5 @@
 import os
+import inspect
 from typing import Optional
 
 try:
@@ -64,12 +65,30 @@ class GeminiClient:
 
         try:
             # match the simple pattern used in existing examples (client.models.generate_content)
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=prompt,
-                temperature=temperature,
-                max_output_tokens=max_output_tokens,
-            )
+            generate_fn = getattr(self.client.models, "generate_content")
+
+            # Build base kwargs and only pass supported args to avoid unexpected-keyword errors
+            base_kwargs = {
+                "model": self.model,
+                "contents": prompt,
+            }
+            optional_kwargs = {
+                "temperature": temperature,
+                "max_output_tokens": max_output_tokens,
+            }
+
+            try:
+                sig = inspect.signature(generate_fn)
+                supported = set(sig.parameters.keys())
+            except Exception:
+                # If we can't introspect, fall back to passing only base kwargs
+                supported = set(base_kwargs.keys())
+
+            for k, v in optional_kwargs.items():
+                if k in supported:
+                    base_kwargs[k] = v
+
+            response = generate_fn(**base_kwargs)
 
             # The official client returns an object with .text (as shown in repo example)
             text = getattr(response, "text", None)
@@ -94,3 +113,62 @@ def build_default_client() -> Optional[GeminiClient]:
     if not api_key:
         return None
     return GeminiClient(api_key=api_key)
+
+
+def call_server(server_url: str, question: str, temperature: float = 0.2, max_output_tokens: int = 512) -> str:
+    """POST to the FastAPI server /generate endpoint and return the raw response body as text.
+
+    This uses only the standard library so it works without installing extra HTTP clients.
+    """
+    import json
+    from urllib import request, error
+
+    server_url = server_url.rstrip("/") + "/generate"
+    payload = {
+        "question": question,
+        "temperature": temperature,
+        "max_output_tokens": max_output_tokens,
+    }
+    data = json.dumps(payload).encode("utf-8")
+    req = request.Request(server_url, data=data, headers={"Content-Type": "application/json"}, method="POST")
+
+    try:
+        with request.urlopen(req, timeout=30) as resp:
+            return resp.read().decode("utf-8")
+    except error.HTTPError as e:
+        # try to read error body
+        try:
+            body = e.read().decode("utf-8")
+        except Exception:
+            body = str(e)
+        raise RuntimeError(f"Server returned HTTP {e.code}: {body}") from e
+    except Exception as e:
+        raise RuntimeError(f"Failed to call server: {e}") from e
+
+
+def _cli_main():
+    """Simple CLI to call a running server.
+
+    Example:
+      python backend/gemini_client.py --server http://localhost:8000 --question "What is 2+2?"
+    """
+    import argparse
+    parser = argparse.ArgumentParser(description="Call Gemini Math Tutor server /generate endpoint")
+    parser.add_argument("--server", default="http://localhost:8000", help="Server base URL (default: http://localhost:8000)")
+    parser.add_argument("--question", required=True, help="Question to send to the tutor")
+    parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--max-output-tokens", type=int, default=512)
+    args = parser.parse_args()
+
+    try:
+        out = call_server(args.server, args.question, args.temperature, args.max_output_tokens)
+        print(out)
+    except Exception as e:
+        import sys
+
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    _cli_main()
