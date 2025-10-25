@@ -1,4 +1,5 @@
 # Gemini Math Tutor
+#### Last Updated: October 25, 2025
 
 ![Gemini Math Tutor](images/gemini-math-tutor.png)
 
@@ -76,5 +77,4 @@ flowchart LR
 ### Security note
 Do not commit API keys or secrets. Use Codespaces secrets for secure injection into the container. Local testing may use a session-only `export GEMINI_API_KEY=...` but avoid saving keys to files that could be committed.
 
-Updated: October 25, 2025
 
