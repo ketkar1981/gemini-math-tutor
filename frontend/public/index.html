@@ -4,13 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Gemini Math Tutor</title>
-    <style>
-      body { font-family: system-ui, Arial, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-      textarea { width: 100%; height: 140px; font-size: 1rem; }
-      button { padding: .5rem 1rem; font-size: 1rem; }
-      pre { background:#fafafa; padding:1rem; border:1px solid #eee; white-space:pre-wrap }
-      .row { display:flex; gap:1rem; align-items:center }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <h1>Gemini Math Tutor (Frontend)</h1>
@@ -20,11 +14,11 @@
     <label for="question"><strong>Question</strong></label>
     <textarea id="question" placeholder="E.g. Solve 2x+3=11. Show steps."></textarea>
 
-    <div class="row" style="margin:8px 0">
-      <label style="display:flex;align-items:center;"><input id="temperature" type="number" step="0.1" min="0" max="1" value="0.2" style="width:80px;margin-right:8px">Temperature</label>
-      <label style="display:flex;align-items:center;"><input id="tokens" type="number" step="1" min="16" value="512" style="width:100px;margin-right:8px">Max tokens</label>
+    <div class="row controls">
+      <label class="label-inline"><input id="temperature" class="small" type="number" step="0.1" min="0" max="1" value="0.2">Temperature</label>
+      <label class="label-inline"><input id="tokens" class="small" type="number" step="1" min="16" value="512">Max tokens</label>
       <button id="ask">Ask</button>
-      <span id="status" style="margin-left:1rem;color:#666"></span>
+      <span id="status"></span>
     </div>
 
     <h3>Answer</h3>
