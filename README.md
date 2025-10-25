@@ -16,12 +16,21 @@ What `start_dev.sh` does:
 - Tails backend and frontend logs and cleans up background processes when you press Ctrl-C.
 
 Notes:
-- Make sure `GEMINI_API_KEY` is set before running the script. In Codespaces add it as a Codespaces secret; locally export it in your shell:
+- Preferred (Codespaces): add `GEMINI_API_KEY` as a Codespaces secret so the key is injected securely into the container. This avoids placing the key in shell history or files.
 
-```bash
-export GEMINI_API_KEY="your_real_api_key_here"
-bash start_dev.sh
-```
+	To add a Codespaces secret:
+	1. Go to your repository → Settings → Secrets and variables → Codespaces.
+ 2. Click "New repository secret".
+ 3. Name: `GEMINI_API_KEY`  Value: (paste the key).
+ 4. Rebuild the Codespace / devcontainer so the secret is available in the environment.
+
+- Local (developer machine): if you're running the script locally you can set the environment variable in your shell for the current session. Avoid committing keys or placing them in files that might be checked in.
+
+	Example (temporary for the session):
+	```bash
+	export GEMINI_API_KEY="<your-api-key-here>"
+	bash start_dev.sh
+	```
 
 - If `npm` is not available the script will skip starting the frontend and write a short note to `.devlogs/frontend.log`.
 - If you change `.devcontainer/devcontainer.json` (ports behavior), rebuild the devcontainer so the settings take effect.
@@ -30,5 +39,3 @@ That's it — run `bash start_dev.sh` and follow the printed messages.
 
 Updated: October 25, 2025
 
-
-- A minimal frontend is included in `frontend/` that serves a static page and proxies `/api` requests to the backend. The frontend dev server runs on port 3000 by default and proxies to the backend on port 8000.
