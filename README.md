@@ -8,6 +8,7 @@
 - This project is designed for contributors to use GitHub Codespaces in a browser — no local installs are required. The devcontainer provisions Python, Node, and the extensions needed for development.
 
 - Contributors are expected to obtain a Gemini API key and add it as a Codespaces secret (secure, not checked into the repo).
+	- [General introduction to Github Codespaces](https://www.youtube.com/watch?v=fI6LyWuxwcQ)
     - [How to fork a Github repo](https://www.youtube.com/watch?v=-9ftoxZ2X9g)
     - [How to start Codespaces for a repo you forked](https://www.youtube.com/watch?v=2P-LycfbDF0)
 	- [How to obtain Gemini key](https://www.youtube.com/watch?v=6BRyynZkvf0)
